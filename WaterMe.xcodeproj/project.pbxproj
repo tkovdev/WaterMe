@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		E07A1A4E2C4834E00028352B /* WaterMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07A1A4D2C4834E00028352B /* WaterMeApp.swift */; };
-		E07A1A502C4834E00028352B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07A1A4F2C4834E00028352B /* ContentView.swift */; };
 		E07A1A522C4834E30028352B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E07A1A512C4834E30028352B /* Assets.xcassets */; };
 		E07A1A552C4834E30028352B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E07A1A542C4834E30028352B /* Preview Assets.xcassets */; };
 		E07A1A5D2C483C6F0028352B /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07A1A5C2C483C6F0028352B /* HealthKitManager.swift */; };
+		E0E196D02C4BDBE70081A00F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E196CF2C4BDBE70081A00F /* SettingsView.swift */; };
+		E0E196D42C4BDC3F0081A00F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E196D32C4BDC3F0081A00F /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E07A1A4A2C4834E00028352B /* WaterMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E07A1A4D2C4834E00028352B /* WaterMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterMeApp.swift; sourceTree = "<group>"; };
-		E07A1A4F2C4834E00028352B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E07A1A512C4834E30028352B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E07A1A542C4834E30028352B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E07A1A5B2C48354C0028352B /* WaterMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaterMe.entitlements; sourceTree = "<group>"; };
 		E07A1A5C2C483C6F0028352B /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		E0E196CF2C4BDBE70081A00F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E0E196D32C4BDC3F0081A00F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +56,10 @@
 		E07A1A4C2C4834E00028352B /* WaterMe */ = {
 			isa = PBXGroup;
 			children = (
+				E0E196D22C4BDC2F0081A00F /* Settings */,
+				E0E196D12C4BDC250081A00F /* Main */,
 				E07A1A5B2C48354C0028352B /* WaterMe.entitlements */,
 				E07A1A4D2C4834E00028352B /* WaterMeApp.swift */,
-				E07A1A4F2C4834E00028352B /* ContentView.swift */,
 				E07A1A512C4834E30028352B /* Assets.xcassets */,
 				E07A1A532C4834E30028352B /* Preview Content */,
 				E07A1A5C2C483C6F0028352B /* HealthKitManager.swift */,
@@ -70,6 +73,22 @@
 				E07A1A542C4834E30028352B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E0E196D12C4BDC250081A00F /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E0E196D32C4BDC3F0081A00F /* MainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E0E196D22C4BDC2F0081A00F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E0E196CF2C4BDBE70081A00F /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,8 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E07A1A502C4834E00028352B /* ContentView.swift in Sources */,
+				E0E196D02C4BDBE70081A00F /* SettingsView.swift in Sources */,
 				E07A1A4E2C4834E00028352B /* WaterMeApp.swift in Sources */,
+				E0E196D42C4BDC3F0081A00F /* MainView.swift in Sources */,
 				E07A1A5D2C483C6F0028352B /* HealthKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,35 +9,17 @@ import SwiftUI
 import HealthKit
 
 struct ContentView: View {
-    @EnvironmentObject var healthManager: HealthKitManager
+    @State var healthManager: HealthKitManager
+    
+    init(healthManager: HealthKitManager) {
+        self.healthManager = healthManager
+    }
     
     var body: some View {
-        VStack {
-            Button("Add", systemImage: "plus", action: {
-                Task {
-                    await healthManager.addTodayWater()
-                    await healthManager.fetchTodayWater()
-                    await healthManager.fetchMostRecentWater()
-                }
-            })
-            .labelStyle(.iconOnly)
-            .padding(10)
-            
-            Text(String(format: "%.0f ml", healthManager.consumption[.startOfToday] ?? 0))
-            
-            Button("Remove", systemImage: "minus", action: {
-                Task {
-                    await healthManager.removeTodayWater()
-                    await healthManager.fetchTodayWater()
-                    await healthManager.fetchMostRecentWater()
-                }
-            })
-            .labelStyle(.iconOnly)
-            .padding(10)
+        NavigationStack {
+            ToolbarItem(placement: .navigationBarLeading){
+                NavigationLink("Profile", destination: ProfileView())
+            }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

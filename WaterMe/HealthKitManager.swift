@@ -14,41 +14,87 @@ extension Date {
     }
 }
 
+struct HealthKitResults {
+    var units: HKUnit
+    var consumption: HKQuantity
+    var mostRecentWater: HKSample? = nil
+    
+    init(){
+        self.units = HKUnit.literUnit(with: .milli)
+        self.consumption = HKQuantity.init(unit: self.units, doubleValue: 0)
+
+    }
+}
+
 class HealthKitManager : ObservableObject {
     let healthStore: HKHealthStore = HKHealthStore()
-    @Published var consumption: [Date : Double] = [:]
-    @Published var mostRecentWater: HKSample? = nil
+    @Published var results: HealthKitResults = HealthKitResults()
     
     init() {
+        Task {
+            if HKHealthStore.isHealthDataAvailable() {
+                await requestAuthorization()
+                await fetchTodayWater()
+                fetchMostRecentWater()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(methodOfReceivedNotification(notification:)), name: NSNotification.Name.HKUserPreferencesDidChange, object: nil)
+
+    }
+    
+    func requestAuthorization() async {
         let healthKitAccess: Set = [
             HKQuantityType(.dietaryWater)
         ];
+        do {
+            try await healthStore.requestAuthorization(toShare: healthKitAccess, read: healthKitAccess)
+        } catch {
+            fatalError("*** An unexpected error occurred while requesting authorization: \(error.localizedDescription) ***")
+        }
+    }
+    
+    @objc func methodOfReceivedNotification(notification: Notification) {
         Task {
-            do {
-                if HKHealthStore.isHealthDataAvailable() {
-                    try await healthStore.requestAuthorization(toShare: healthKitAccess, read: healthKitAccess)
-                    await fetchTodayWater()
-                    await fetchMostRecentWater()
+            await fetchUserUnitPreference()
+        }
+    }
+    
+    var increment: Double {
+        return UserDefaults.standard.double(forKey: "increment")
+    }
+    
+    func fetchUserUnitPreference() async {
+        healthStore.preferredUnits(for: [HKQuantityType(.dietaryWater)]) { result, error in
+            DispatchQueue.main.async {
+                if(result[HKQuantityType(.dietaryWater)] != nil){
+                    self.results.units = result[HKQuantityType(.dietaryWater)]!
+                    
+                    if(UserDefaults.standard.object(forKey: "increment") == nil || UserDefaults.standard.double(forKey: "increment") <= 0) {
+                        UserDefaults.standard.setValue(HKQuantity(unit: .literUnit(with: .milli), doubleValue: 500).doubleValue(for: self.results.units), forKey: "increment")
+                    }
                 }
-            } catch {
-                
-                fatalError("*** An unexpected error occurred while requesting authorization: \(error.localizedDescription) ***")
             }
         }
     }
     
     func fetchTodayWater() async {
         let type = HKQuantityType(.dietaryWater)
-        let predicate = HKQuery.predicateForSamples(withStart: .startOfToday, end: Date())
-
+        let datePredicate = HKQuery.predicateForSamples(withStart: .startOfToday, end: Date())
+        let sourcePredicate = HKQuery.predicateForObjects(from: HKSource.default())
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate, sourcePredicate])
+                
         let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate) { _, result, error in
-            guard let qty = result, error == nil else {
-                print(error)
-                return
+            if (error != nil) {
+                debugPrint("*** fetchTodayWater() Error: \(error?.localizedDescription ?? "") ***")
             }
             
             DispatchQueue.main.async {
-                self.consumption[.startOfToday] = qty.sumQuantity()?.doubleValue(for: .literUnit(with: .milli))
+                if(result != nil){
+                    self.results.consumption = result!.sumQuantity() ?? HKQuantity.init(unit: self.results.units, doubleValue: 0)
+                }else {
+                    self.results.consumption = HKQuantity.init(unit: self.results.units, doubleValue: 0)
+                }
             }
         }
         healthStore.execute(query)
@@ -65,18 +111,11 @@ class HealthKitManager : ObservableObject {
             query, result, error in
             
             if (error != nil){
-                return
-            }
-            guard let qty = result, error == nil else {
-                return
-            }
-            guard let water = qty.first else {
-                return
+                debugPrint("*** fetchMostRecentWater() Error: \(error?.localizedDescription ?? "") ***")
             }
             
             DispatchQueue.main.async {
-                self.mostRecentWater = water
-                print(self.mostRecentWater!)
+                self.results.mostRecentWater = result?.first ?? nil
             }
         }
         healthStore.execute(query)
@@ -84,7 +123,7 @@ class HealthKitManager : ObservableObject {
     
     func addTodayWater() async {
         let type = HKQuantityType(.dietaryWater)
-        let qty = HKQuantity(unit: .literUnit(with: .milli), doubleValue: 500)
+        let qty = HKQuantity(unit: self.results.units, doubleValue: self.increment)
         let water: HKQuantitySample = HKQuantitySample(type: type, quantity: qty, start: Date(), end: Date())
         do {
             try await healthStore.save(water)
@@ -94,14 +133,40 @@ class HealthKitManager : ObservableObject {
     }
     
     func removeTodayWater() async {
-        if(self.mostRecentWater == nil) {
+        if(self.results.mostRecentWater == nil) {
             return
         }
         
         do {
-            try await healthStore.delete(self.mostRecentWater!)
+            try await healthStore.delete(self.results.mostRecentWater!)
         } catch {
             fatalError("*** An unexpected error occurred while deleting the water: \(error.localizedDescription) ***")
+        }
+    }
+}
+
+
+extension HKUnit {
+    func formatted() -> String {
+        switch self.unitString {
+        case "cups_imp":
+            return "cups"
+        case "cups_us":
+            return "cups"
+        case "fl_oz_imp":
+            return "fl. oz."
+        case "fl_oz_us":
+            return "fl. oz."
+        case "L":
+            return "L"
+        case "mL":
+            return "mL"
+        case "pt_imp":
+            return "pints"
+        case "pt_us":
+            return "pints"
+        default:
+            return ""
         }
     }
 }

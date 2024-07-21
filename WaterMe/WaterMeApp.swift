@@ -14,7 +14,29 @@ struct WaterMeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(healthManager)
-        }
+            NavigationStack {
+                if(healthManager.healthStore.authorizationStatus(for: HKQuantityType(.dietaryWater)) == HKAuthorizationStatus.sharingAuthorized){
+                    MainView()
+                        .toolbar(content: {
+                            ToolbarItem(placement: .navigationBarTrailing){
+                                NavigationLink("Settings", destination: SettingsView())
+                            }
+                        }).task {
+                            await healthManager.fetchUserUnitPreference()
+                        }
+                }else{
+                    VStack(spacing: 16){
+                        Image("permissionScreen")
+                            .resizable()
+                            .scaledToFit()
+                        Text("Permission Required!").font(.headline)
+                        Text("WaterMe requires read and write permission to your Health data.").font(.subheadline)
+                        Text("Go to [Settings > Privacy & Security > Health](App-prefs:root) and allow \"WaterMe\" access to read and write.")
+                        .font(.caption)
+                        .padding(10)
+                    }.padding(20)
+                }
+            }
+        }.environmentObject(healthManager)
     }
 }
