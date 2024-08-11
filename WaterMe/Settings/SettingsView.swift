@@ -51,16 +51,16 @@ struct SettingsView: View {
                 }
                 if(viewModel.notificationsEnabled && !viewModel.notificationsDenied) {
                     List {
-                        LabeledContent("\(healthManager.results.units.formatted())/day") {
-                            TextField("Daily Goal", value: $viewModel.goal, format: .number, prompt: Text("Daily Goal"))
-                                .multilineTextAlignment(.trailing)
-                                .onSubmit() {
-                                    UserDefaults.standard.setValue(viewModel.goal, forKey: "goal")
-                                    Task {
-                                        await viewModel.setNotifications()
-                                    }
-                                }
-                        }
+//                        LabeledContent("\(healthManager.results.units.formatted())/day") {
+//                            TextField("Daily Goal", value: $viewModel.goal, format: .number, prompt: Text("Daily Goal"))
+//                                .multilineTextAlignment(.trailing)
+//                                .onSubmit() {
+//                                    UserDefaults.standard.setValue(viewModel.goal, forKey: "goal")
+//                                    Task {
+//                                        await viewModel.setNotifications()
+//                                    }
+//                                }
+//                        }
                         DatePicker("From", selection: $viewModel.notificationStartTime, displayedComponents: .hourAndMinute)
                             .onChange(of: viewModel.notificationStartTime) {
                                 UserDefaults.standard.set(viewModel.notificationStartTime, forKey: "notificationStartTime")

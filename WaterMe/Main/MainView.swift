@@ -23,7 +23,7 @@ struct MainView: View {
             .padding(10)
             
             HStack {
-                Text(healthManager.results.consumption.doubleValue(for: healthManager.results.units), format: .number.precision(.fractionLength(2)))
+                Text(healthManager.results.consumption.doubleValue(for: healthManager.results.units), format: .number.precision(.fractionLength(0)))
                 Text(healthManager.results.units.formatted())
             }
 

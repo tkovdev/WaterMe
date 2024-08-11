@@ -148,10 +148,11 @@ class HealthKitManager : ObservableObject {
 
 extension HKUnit {
     func formatted() -> String {
+        print(self.unitString)
         switch self.unitString {
-        case "cups_imp":
+        case "cup_imp":
             return "cups"
-        case "cups_us":
+        case "cup_us":
             return "cups"
         case "fl_oz_imp":
             return "fl. oz."
