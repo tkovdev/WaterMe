@@ -26,7 +26,6 @@ struct MainView: View {
                 Text(healthManager.results.consumption.doubleValue(for: healthManager.results.units), format: .number.precision(.fractionLength(0)))
                 Text(healthManager.results.units.formatted())
             }
-
             Button("Remove", systemImage: "minus", action: {
                 Task {
                     await healthManager.removeTodayWater()
@@ -38,4 +37,7 @@ struct MainView: View {
             .padding(10)
         }
     }
+}
+#Preview {
+    MainView().environmentObject(HealthKitManager())
 }

@@ -18,12 +18,24 @@ struct WaterMeApp: App {
                 if(healthManager.healthStore.authorizationStatus(for: HKQuantityType(.dietaryWater)) == HKAuthorizationStatus.sharingAuthorized){
                     MainView()
                         .toolbar(content: {
+                            ToolbarItem(placement: .navigationBarLeading){
+                                NavigationLink {
+                                    SettingsView()
+                                } label: {
+                                    Image(systemName: "gearshape")
+                                }
+                            };
                             ToolbarItem(placement: .navigationBarTrailing){
-                                NavigationLink("Settings", destination: SettingsView())
+                                NavigationLink {
+                                    CustomAdd()
+                                } label: {
+                                    Image(systemName: "square.and.pencil")
+                                }
                             }
                         }).task {
                             await healthManager.fetchUserUnitPreference()
                         }
+                        .tint(.blue)
                 }else{
                     VStack(spacing: 16){
                         Image("permissionScreen")

@@ -121,6 +121,17 @@ class HealthKitManager : ObservableObject {
         healthStore.execute(query)
     }
     
+    func addTodayWater(customAmount: Double) async {
+        let type = HKQuantityType(.dietaryWater)
+        let qty = HKQuantity(unit: self.results.units, doubleValue: customAmount)
+        let water: HKQuantitySample = HKQuantitySample(type: type, quantity: qty, start: Date(), end: Date())
+        do {
+            try await healthStore.save(water)
+        } catch {
+            fatalError("*** An unexpected error occurred while saving the water: \(error.localizedDescription) ***")
+        }
+    }
+    
     func addTodayWater() async {
         let type = HKQuantityType(.dietaryWater)
         let qty = HKQuantity(unit: self.results.units, doubleValue: self.increment)
@@ -148,7 +159,6 @@ class HealthKitManager : ObservableObject {
 
 extension HKUnit {
     func formatted() -> String {
-        print(self.unitString)
         switch self.unitString {
         case "cup_imp":
             return "cups"

@@ -14,6 +14,7 @@
 		E09067542C5634DD00F69220 /* DayPicker in Resources */ = {isa = PBXBuildFile; fileRef = E09067532C5634DD00F69220 /* DayPicker */; };
 		E09067562C56355C00F69220 /* DayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09067552C56355C00F69220 /* DayPicker.swift */; };
 		E09067582C5636FB00F69220 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09067572C5636FB00F69220 /* SettingsViewModel.swift */; };
+		E0BB2A402D21B7C600CE46D9 /* CustomAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BB2A3F2D21B7C600CE46D9 /* CustomAdd.swift */; };
 		E0E196D02C4BDBE70081A00F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E196CF2C4BDBE70081A00F /* SettingsView.swift */; };
 		E0E196D42C4BDC3F0081A00F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E196D32C4BDC3F0081A00F /* MainView.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		E09067532C5634DD00F69220 /* DayPicker */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DayPicker; sourceTree = "<group>"; };
 		E09067552C56355C00F69220 /* DayPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DayPicker.swift; path = WaterMe/Settings/DayPicker/DayPicker.swift; sourceTree = "<group>"; };
 		E09067572C5636FB00F69220 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		E0BB2A3F2D21B7C600CE46D9 /* CustomAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAdd.swift; sourceTree = "<group>"; };
 		E0E196CF2C4BDBE70081A00F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E0E196D32C4BDC3F0081A00F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,9 +84,18 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		E0BB2A3E2D21B7AE00CE46D9 /* CustomAdd */ = {
+			isa = PBXGroup;
+			children = (
+				E0BB2A3F2D21B7C600CE46D9 /* CustomAdd.swift */,
+			);
+			path = CustomAdd;
+			sourceTree = "<group>";
+		};
 		E0E196D12C4BDC250081A00F /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E0BB2A3E2D21B7AE00CE46D9 /* CustomAdd */,
 				E0E196D32C4BDC3F0081A00F /* MainView.swift */,
 			);
 			path = Main;
@@ -177,6 +188,7 @@
 				E0E196D42C4BDC3F0081A00F /* MainView.swift in Sources */,
 				E07A1A5D2C483C6F0028352B /* HealthKitManager.swift in Sources */,
 				E09067582C5636FB00F69220 /* SettingsViewModel.swift in Sources */,
+				E0BB2A402D21B7C600CE46D9 /* CustomAdd.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
